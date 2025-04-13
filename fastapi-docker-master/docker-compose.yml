@@ -1,0 +1,30 @@
+# Docker Compose file for FastAPI and PostgreSQL
+version: '3.9'
+
+services:
+  db:
+    image: postgres:15
+    container_name: my_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: touch1122
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    networks:
+      - mynetwork
+
+  fastapi:
+    build: .
+    container_name: fastapi_app
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgresql://postgres:touch1122@db:5432/postgres
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
+
+networks:
+  mynetwork:
